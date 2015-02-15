@@ -1,0 +1,219 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Securing your Mapbox Secret Tokens</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../../../../assets/css/screen.css?v=d497b4881d">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/">
+    
+    <meta property="og:site_name" content="cluhring">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Securing your Mapbox Secret Tokens">
+    <meta property="og:description" content="In this blog post, I will show you how to insert a dynamic map into your rails project and protect your secret tokens. 1) Go to Mapbox.com - create an account &amp;amp; design a map (super easy).  Mapbox provides...">
+    <meta property="og:url" content="http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/">
+    <meta property="og:image" content="http://localhost:2368/content/images/2015/02/burrito-bombers-home-1.png">
+    <meta property="article:published_time" content="2015-02-15T00:47:00.000Z">
+    <meta property="article:modified_time" content="2015-02-15T00:50:29.964Z">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Securing your Mapbox Secret Tokens">
+    <meta name="twitter:description" content="In this blog post, I will show you how to insert a dynamic map into your rails project and protect your secret tokens. 1) Go to Mapbox.com - create an account &amp;amp; design a map (super easy).  Mapbox provides...">
+    <meta name="twitter:url" content="http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/">
+    <meta name="twitter:image:src" content="http://localhost:2368/content/images/2015/02/burrito-bombers-home-1.png">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "cluhring",
+    "author": {
+        "@type": "Person",
+        "name": "Chris Luhring",
+        "url": "http://localhost:2368/author/chris",
+        "sameAs": null
+    },
+    "headline": "Securing your Mapbox Secret Tokens",
+    "url": "http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/",
+    "datePublished": "2015-02-15T00:47:00.000Z",
+    "dateModified": "2015-02-15T00:50:29.964Z",
+    "image": "http://localhost:2368/content/images/2015/02/burrito-bombers-home-1.png",
+    "description": "In this blog post, I will show you how to insert a dynamic map into your rails project and protect your secret tokens. 1) Go to Mapbox.com - create an account &amp;amp; design a map (super easy).  Mapbox provides..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="cluhring" href="http://localhost:2368/rss/">
+</head>
+<body class="post-template">
+
+    
+
+
+<header class="main-header post-head " style="background-image: url(../../../../content/images/2015/02/burrito-bombers-home-1.png)">
+    <nav class="main-nav overlay clearfix">
+        <a class="back-button icon-arrow-left" href="http://localhost:2368">Home</a>
+        <a class="subscribe-button icon-feed" href="http://localhost:2368/rss/">Subscribe</a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post featured">
+
+        <header class="post-header">
+            <h1 class="post-title">Securing your Mapbox Secret Tokens</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-02-14">14 February 2015</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>In this blog post, I will show you how to insert a dynamic map into your rails project and protect your secret tokens.</p>
+
+<p>1) Go to Mapbox.com - create an account &amp; design a map (super easy).  Mapbox provides users with a free 30 day trial and some amazing maps and easy to use tools that you can use to build a pretty cool map very quickly. Mapbox also provides users with information to quickly get your map displaying in your projects here: <a href="https://www.mapbox.com/mapbox.js/example/v1.0.0/">https://www.mapbox.com/mapbox.js/example/v1.0.0/</a>. However, I think you might find the information below helpful, as you will probably want to keep your secret keys/tokens, secret.</p>
+
+<p>2) Next, cd into your rails application and create a main.js file in your project  </p>
+
+<pre><code>touch main.js  
+</code></pre>
+
+<p>3) Insert "require('map box.js')" into the main.js file from you command line:  </p>
+
+<pre><code>echo "require('mapbox.js');" &gt;&gt; main.js  
+</code></pre>
+
+<p>4) Install mapbox  </p>
+
+<pre><code>$ npm install mapbox.js —save
+</code></pre>
+
+<p>5) Install browserify (a bundling tool for javascript)  </p>
+
+<pre><code>$ npm install -g browserify
+</code></pre>
+
+<p>6) Bundle your project using browserify  </p>
+
+<pre><code>browserify main.js -o bundle.js  
+</code></pre>
+
+<p>7) To access mapbox in your rails project, open your app/views/layouts/application.html.erb file and insert the following html between your head tags.  This html allows you to accesses the mapbox api within your project. Note: You you will eventually want to move the style tags out into a stylesheet, but the code below will get you started.</p>
+
+<pre><code>&lt;meta charset=utf-8 /&gt;  
+&lt;title&gt;My First Map with Mapbox&lt;/title&gt;  
+&lt;meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/&gt;  
+&lt;script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.js'&lt;/script&gt;  
+&lt;link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.5/mapbox.css' rel='stylesheet'/&gt;  
+&lt;style&gt;  
+#map { height: 400px; width: 800px; padding:5; border: none; float:center; top: 5px; bottom:0; width:100%; }
+&lt;/style&gt;
+</code></pre>
+
+<p>8) In the view where you'd like to see your map displayed, insert the following html.  This code accesses your mapbox account and displays your map.</p>
+
+<pre><code>&lt;div id='map'&gt;&lt;/div&gt;  
+&lt;script&gt;  
+L.mapbox.accessToken = 'PUBLIC KEY';  
+var map = L.mapbox.map('map', 'MAP ID')  
+&lt;/script&gt;  
+</code></pre>
+
+<ul>
+<li><p>Your <strong>PUBLIC KEY</strong> is generated by Mapbox and can be found here here: <a href="https://www.mapbox.com/account/apps/">https://www.mapbox.com/account/apps/</a></p></li>
+<li><p>Your <strong>MAP ID</strong> will be located in your project folders: <a href="https://www.mapbox.com/projects/">https://www.mapbox.com/projects/</a></p></li>
+</ul>
+
+<p>9) If you are using github or any other public site to host your repository, you will also want to hide your <strong>PUBLIC KEY</strong>, so the big bad computer hackers can't jack your mapbox maps and/or other sensitive info (I don't know much about hacking yet).  In Rails 4.1, config/secrets.yml is the new default location for secret<em>key</em>base of your application. It can also be used also for storing other secret variables, like environment-specific tokens, API keys etc.  Therefore, we are going to move your <strong>PUBLIC KEY</strong> into your config/secrets.yml, assigning it the name "mapbox_token", like so:</p>
+
+<pre><code>development:  
+  mapbox_token: pk.1111111111aaaaaaaaaaa.22222222222bbbbbbbbbbbb
+</code></pre>
+
+<p>10) Eventually, you might want to test the JavaScript of your map and/or access your map in production.  Therefore, you might as well create a default environment, which allows your mapbox_token to be accessed from all environments, like so:</p>
+
+<pre><code>default: &amp;default  
+    mapbox_token: pk.1111111111aaaaaaaaaaa.22222222222bbbbbbbbbbbb
+development:  
+  &lt;&lt;: *default
+test:  
+  &lt;&lt;: *default
+production:  
+  &lt;&lt;: *default
+</code></pre>
+
+<p>11) Next, go back to the view where you placed your map.  Rails 4.1 provides you with methods to access your secrets with <code>Rails.application.secrets</code>.  Because you placed the map in a view, you also need to wrap this code in erb tags like so <code>&lt;%= Rails.application.secrets.mapbox_token %&gt;</code>. The view which displays your map should now look like this:</p>
+
+<pre><code>      &lt;div id='map'&gt;&lt;/div&gt;
+      &lt;script&gt;
+      L.mapbox.accessToken = '&lt;%= Rails.application.secrets.mapbox_token %&gt;';
+      var map = L.mapbox.map('map', 'MAP ID')
+      &lt;/script&gt;
+</code></pre>
+
+<p>12) Finally, you will want to add "config/secrets.yml" to your .gitignore file before pushing to github/heroku to ensure your secrets are safe. Yay! Your secret mapbox token is now hidden and safe.  </p>
+
+<p>Thanks for checking out my first technical blogpost :) <br>
+It would not have been possible without the help of Rachel Warbelow.  Thanks so much Rachel!  </p>
+
+<p>Chris Luhring <br>
+Turing Student <br>
+1410 Cohort</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+
+            <section class="author">
+                <h4><a href="../../../../author/chris/">Chris Luhring</a></h4>
+
+                    <p>Read <a href="../../../../author/chris/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Securing%20your%20Mapbox%20Secret%20Tokens&amp;url=http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+        </footer>
+
+    </article>
+
+</main>
+
+
+
+    <footer class="site-footer clearfix">
+         <section class="copyright"><a href="http://localhost:2368">cluhring</a> © 2015</section>
+         <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+    </footer>
+
+    <script src="../../../../public/jquery.js?v=d497b4881d"></script>
+
+    <script type="text/javascript" src="../../../../assets/js/jquery.fitvids.js?v=d497b4881d"></script>
+    <script type="text/javascript" src="../../../../assets/js/index.js?v=d497b4881d"></script>
+
+</body>
