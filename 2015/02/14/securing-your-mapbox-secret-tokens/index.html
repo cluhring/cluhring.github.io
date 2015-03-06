@@ -11,7 +11,7 @@
 
     <link rel="shortcut icon" href="../../../../favicon.ico">
 
-    <link rel="stylesheet" type="text/css" href="../../../../assets/css/screen.css?v=d497b4881d">
+    <link rel="stylesheet" type="text/css" href="../../../../assets/css/screen.css?v=331373b8f8">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
 
     <link rel="canonical" href="http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/">
@@ -23,7 +23,7 @@
     <meta property="og:url" content="http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/">
     <meta property="og:image" content="http://localhost:2368/content/images/2015/02/burrito-bombers-home-1.png">
     <meta property="article:published_time" content="2015-02-15T00:47:00.000Z">
-    <meta property="article:modified_time" content="2015-02-15T00:50:29.964Z">
+    <meta property="article:modified_time" content="2015-03-06T18:34:04.669Z">
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Securing your Mapbox Secret Tokens">
@@ -45,7 +45,7 @@
     "headline": "Securing your Mapbox Secret Tokens",
     "url": "http://localhost:2368/2015/02/14/securing-your-mapbox-secret-tokens/",
     "datePublished": "2015-02-15T00:47:00.000Z",
-    "dateModified": "2015-02-15T00:50:29.964Z",
+    "dateModified": "2015-03-06T18:34:04.669Z",
     "image": "http://localhost:2368/content/images/2015/02/burrito-bombers-home-1.png",
     "description": "In this blog post, I will show you how to insert a dynamic map into your rails project and protect your secret tokens. 1) Go to Mapbox.com - create an account &amp;amp; design a map (super easy).  Mapbox provides..."
 }
@@ -61,8 +61,8 @@
 
 <header class="main-header post-head " style="background-image: url(../../../../content/images/2015/02/burrito-bombers-home-1.png)">
     <nav class="main-nav overlay clearfix">
-        <a class="back-button icon-arrow-left" href="http://localhost:2368">Home</a>
-        <a class="subscribe-button icon-feed" href="http://localhost:2368/rss/">Subscribe</a>
+        <a class="back-button icon-arrow-left" href="../../../../">Home</a>
+        <a class="subscribe-button icon-feed" href="../../../../rss/index.rss">Subscribe</a>
     </nav>
 </header>
 
@@ -148,7 +148,10 @@ development:
 test:  
   &lt;&lt;: *default
 production:  
-  &lt;&lt;: *default
+  secret_key_base: &lt;%= ENV["SECRET_KEY_BASE"] %&gt;
+
+# Do not keep production secrets in the repository,
+# instead read values from the environment.
 </code></pre>
 
 <p>11) Next, go back to the view where you placed your map.  Rails 4.1 provides you with methods to access your secrets with <code>Rails.application.secrets</code>.  Because you placed the map in a view, you also need to wrap this code in erb tags like so <code>&lt;%= Rails.application.secrets.mapbox_token %&gt;</code>. The view which displays your map should now look like this:</p>
@@ -160,7 +163,9 @@ production:
       &lt;/script&gt;
 </code></pre>
 
-<p>12) Finally, you will want to add "config/secrets.yml" to your .gitignore file before pushing to github/heroku to ensure your secrets are safe. Yay! Your secret mapbox token is now hidden and safe.  </p>
+<p>12) Add "config/secrets.yml" to your .gitignore file before pushing to github to ensure your secrets are safe.</p>
+
+<p>13) Finally, when pushing your application up to production, specifically heroku, you will need to need to push up the secrets in your secrets.yml file.  A good tool for this is the gem Heroku Secrets: <a href="https://github.com/alexpeattie/heroku_secrets">https://github.com/alexpeattie/heroku_secrets</a>.  Simply add the gem to your Gemfile, like so: <code>gem 'heroku_secrets'</code> and from your terminal run <code>bin/rake heroku:secrets RAILS_ENV=production</code>. Yay! Your secret mapbox token is now hidden and safe.  </p>
 
 <p>Thanks for checking out my first technical blogpost :) <br>
 It would not have been possible without the help of Rachel Warbelow.  Thanks so much Rachel!  </p>
@@ -207,13 +212,13 @@ Turing Student <br>
 
 
     <footer class="site-footer clearfix">
-         <section class="copyright"><a href="http://localhost:2368">cluhring</a> © 2015</section>
+         <section class="copyright"><a href="../../../../">cluhring</a> © 2015</section>
          <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
     </footer>
 
-    <script src="../../../../public/jquery.js?v=d497b4881d"></script>
+    <script src="../../../../public/jquery.js?v=331373b8f8"></script>
 
-    <script type="text/javascript" src="../../../../assets/js/jquery.fitvids.js?v=d497b4881d"></script>
-    <script type="text/javascript" src="../../../../assets/js/index.js?v=d497b4881d"></script>
+    <script type="text/javascript" src="../../../../assets/js/jquery.fitvids.js?v=331373b8f8"></script>
+    <script type="text/javascript" src="../../../../assets/js/index.js?v=331373b8f8"></script>
 
 </body>
