@@ -637,7 +637,7 @@ margin on the iframe, cause it breaks stuff. */
 }
 
 .main-nav.overlay a {
-    color: #fff;
+    color: #FC572A;
 }
 
 .main-nav.overlay .back-button,
@@ -648,13 +648,13 @@ margin on the iframe, cause it breaks stuff. */
 .main-nav.overlay a:hover {
     color: #222;
     border-color: #fff;
-    background: #fff;
+    background: center top;
     transition: all 0.1s ease;
 }
 
 /* Add a border to the buttons on hover */
 .back-button:hover,
-.subscribe-button:hover {
+.subscribe-button:hover {0-
     border-color: #bfc8cd;
     color: #9EABB3;
 }
@@ -667,6 +667,11 @@ margin on the iframe, cause it breaks stuff. */
     font-weight: 700;
     font-family: "Open Sans", sans-serif;
     color: #000000;
+}
+
+.author-profile {
+  float: left;
+  left: -150px;
 }
 
 .page-description {
@@ -750,6 +755,7 @@ body:not(.post-template) .post-title {
 
 .post-title a {
     text-decoration: none;
+    color: #FC572A;
 }
 
 .post-excerpt p {
